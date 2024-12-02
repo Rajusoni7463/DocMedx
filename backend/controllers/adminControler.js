@@ -11,7 +11,7 @@ const addDoctor = async (req,res) =>{
         const {name,email,password,speciality,degree,experience,about,fees,address} = req.body;
         const imageFile = req.file
         // console.log({name,email,password,speciality,degree,experience,about,fees,address},imageFile)
-        if(name|| !email|| !password|| !speciality|| !degree|| !experience|| !about|| !fees|| !address){
+        if(!name|| !email|| !password|| !speciality|| !degree|| !experience|| !about|| !fees|| !address){
             return res.json({success:false,message:"missing details"})
             
         }
@@ -84,4 +84,18 @@ const loginAdmin = async (req,res)=>{
 
     }
 }
-export {addDoctor,loginAdmin};
+
+//Api to get all doctor for admin panel
+const allDoctor = async (req,res)=>{
+    try{
+        const doctors = await doctorModel.find({}).select('-password')
+        res.json({success:true,doctors})
+
+    }
+    catch(error){
+        console.log(e)
+        res.json({success:false,message:e.message})
+
+    }
+}
+export {addDoctor,loginAdmin,allDoctor};
